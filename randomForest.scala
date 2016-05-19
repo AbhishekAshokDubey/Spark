@@ -38,8 +38,8 @@ if(do_char_to_OneHot){for((x,i) <- char_col_toUse_names.view.zipWithIndex) one_h
 val col_name = one_hot_col_names++num_col_toUse_names
 val assembler = new VectorAssembler().setInputCols(col_name).setOutputCol("features")
 
-if(do_char_to_OneHot){val stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers ++ one_hot_encoders :+ assembler}
-else{val stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers :+ assembler}
+var stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers :+ assembler
+if(do_char_to_OneHot){stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers ++ one_hot_encoders :+ assembler}
 
 val pipeline = new Pipeline().setStages(stages)
 val indexed_df = pipeline.fit(df).transform(df)
