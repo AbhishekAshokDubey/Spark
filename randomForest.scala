@@ -51,13 +51,13 @@ val ml_df = indexed_df.select(col(target_col_name).cast("double").alias("label")
 val splits = ml_df.randomSplit(Array(0.8, 0.2))
 val (trainingData, testData) = (splits(0), splits(1))
 
-val numClasses = 2
-val categoricalFeaturesInfo = Map[Int, Int]((0,29),(1,3),(2,4),(3,5),(4,107))
 val numTrees = 3 // Use more in practice.
 val featureSubsetStrategy = "auto" // Let the algorithm choose.
 val impurity = "variance"
 val maxDepth = 4
 val maxBins = 107
+var categoricalFeaturesInfo = Map[Int, Int]()
+if(!do_char_to_OneHot){categoricalFeaturesInfo = Map[Int, Int]((0,29),(1,3),(2,4),(3,5),(4,107))}
 
 val model = RandomForest.trainRegressor(sc.parallelize(trainingData.collect()), categoricalFeaturesInfo, numTrees, featureSubsetStrategy, impurity, maxDepth, maxBins)
 
