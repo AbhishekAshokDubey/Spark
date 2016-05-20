@@ -39,7 +39,7 @@ val col_name = one_hot_col_names++num_col_toUse_names
 val assembler = new VectorAssembler().setInputCols(col_name).setOutputCol("features")
 
 var stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers :+ assembler
-if(do_char_to_OneHot){stages: Array[org.apache.spark.ml.PipelineStage] = index_transformers ++ one_hot_encoders :+ assembler}
+if(do_char_to_OneHot){stages = index_transformers ++ one_hot_encoders :+ assembler}
 
 val pipeline = new Pipeline().setStages(stages)
 val indexed_df = pipeline.fit(df).transform(df)
